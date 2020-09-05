@@ -2,6 +2,7 @@ package com.slackmag.workshop.presentation.endpoint;
 
 import com.slackmag.workshop.WorkshopApplication;
 import com.slackmag.workshop.presentation.requests.CalculatorRequest;
+import com.slackmag.workshop.presentation.requests.CalculatorResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,14 @@ class CalculatorEndpointIntegrationTest {
     void callToPlusEndpoint() throws URISyntaxException {
         CalculatorRequest calculatorRequest = defaultRequest().build();
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(new URI("http://localhost:8080/plus"), calculatorRequest, String.class);
-
+        ResponseEntity<CalculatorResponse> responseEntity =
+                restTemplate
+                        .postForEntity(new URI("http://localhost:8080/plus"), calculatorRequest, CalculatorResponse.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isEqualTo("444");
+        assertThat(responseEntity.getBody())
+                .isInstanceOf(CalculatorResponse.class);
+        CalculatorResponse response = responseEntity.getBody();
+        assertThat(response.result)
+                .isEqualTo(444);
     }
 }

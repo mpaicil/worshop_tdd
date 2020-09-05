@@ -1,6 +1,7 @@
 package com.slackmag.workshop.presentation.endpoint;
 
 import com.slackmag.workshop.presentation.requests.CalculatorRequest;
+import com.slackmag.workshop.presentation.requests.CalculatorResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,9 @@ class CalculatorEndpointTest {
         request.valor1 = 123;
         request.valor2 = 321;
 
-        ResponseEntity<String> responseEntity = calculatorEndpoint.plus(request);
+        ResponseEntity<CalculatorResponse> responseEntity = calculatorEndpoint.plus(request);
 
-        assertThat(responseEntity.getBody()).isNotNull()
-            .isEqualTo("444");
+        assertThat(responseEntity.getBody().result).isNotNull()
+            .isEqualTo(444);
     }
 }
